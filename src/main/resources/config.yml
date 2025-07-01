@@ -1,0 +1,55 @@
+# SpecialItem Plugin Configuration
+
+# Strict mode:
+# true: When a player uses an item, its properties (commands, cooldown, etc.)
+#       are ALWAYS read from this file based on its internal ID.
+#       This ensures consistency, even if the item was modified.
+# false: When a player uses an item, its properties are first read from the
+#        item's own data (PDC). If a property is missing, it falls back
+#        to this configuration file. This allows for "legacy" or uniquely
+#        modified items to exist.
+strict: false
+
+# List of all special items. The key (e.g., 'fire_sword') is the unique ID for the item.
+items:
+  fire_sword:
+    material: "NETHERITE_SWORD"
+    name: "<gradient:#ff8c00:#ff0000>Infernal Blade</gradient>"
+    lore:
+      - "<gray>A sword forged in dragon's breath."
+      - "<dark_red>Use to gain fire resistance."
+    enchantments:
+      FIRE_ASPECT: 2
+      SHARPNESS: 7
+    commands:
+      - "effect give <player> fire_resistance 30 0 true"
+      - "msg <player> <gold>The blade protects you from fire!"
+    permission-required: true
+    cooldown: 60 # in seconds
+    consume: false
+  teleport_pearl:
+    material: "ENDER_PEARL"
+    name: "<light_purple>Warp Pearl</light_purple>"
+    lore:
+      - "<gray>Right-click to warp to spawn!"
+      - ""
+      - "<italic><yellow>A one-time use item.</yellow></italic>"
+    enchantments: {} # No enchants
+    commands:
+      - "spawn <player>"
+    permission-required: false
+    cooldown: 300 # 5 minutes
+    consume: true
+  lightning_staff:
+    material: "BLAZE_ROD"
+    name: "<aqua>Staff of Storms</aqua>"
+    lore:
+      - "<blue>Summon lightning at your gaze."
+    enchantments:
+      CHANNELING: 1
+    commands:
+      - "execute at <player> run summon lightning_bolt ^ ^ ^5" # Summons lightning 5 blocks in front
+      - "playsound minecraft:entity.lightning_bolt.thunder master <player>"
+    permission-required: true
+    cooldown: 15
+    consume: false
