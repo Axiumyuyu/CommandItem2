@@ -5,12 +5,10 @@ import me.axiumyu.commandItem2.CommandItem2.Companion.getRegistry
 import me.axiumyu.commandItem2.CommandItem2.Companion.isStrict
 import me.axiumyu.commandItem2.CommandItem2.Companion.mm
 import me.axiumyu.commandItem2.CommandItem2.Companion.namespacedKey
-import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.Material
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.inventory.ItemStack
 import org.bukkit.permissions.Permission
-import kotlin.collections.forEach
 
 class ItemManager(private val plugin: CommandItem2) {
 
@@ -34,17 +32,18 @@ class ItemManager(private val plugin: CommandItem2) {
                     continue
                 }
 
-                val name = mm.deserialize(plugin.config.getString("$path.name")?:"<red>Unnamed Item</red>")
+                val name = mm.deserialize(plugin.config.getString("$path.name") ?: "<red>Unnamed Item</red>")
                 val lore = plugin.config.getStringList("$path.lore").map { mm.deserialize(it) }
 
                 val enchantments = mutableMapOf<Enchantment, Int>()
                 plugin.config.getConfigurationSection("$path.enchantments")?.getKeys(false)?.forEach { enchantName ->
-                    val enchant = getRegistry(ENCHANTMENT,namespacedKey(enchantName))
+                    val enchant = getRegistry(ENCHANTMENT, namespacedKey(enchantName))
                     if (enchant != null) {
                         enchantments[enchant] = plugin.config.getInt("$path.enchantments.$enchantName")
                     } else {
                         plugin.logger.warning("Invalid enchantment '$enchantName' for item '$id'.")
                     }
+
                 }
 
                 val itemData = ItemData(

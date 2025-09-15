@@ -4,6 +4,7 @@ import io.papermc.paper.registry.RegistryAccess.registryAccess
 import io.papermc.paper.registry.RegistryKey
 import me.clip.placeholderapi.PlaceholderAPI
 import net.kyori.adventure.text.minimessage.MiniMessage
+import org.bukkit.Bukkit.getServer
 import org.bukkit.Keyed
 import org.bukkit.NamespacedKey
 import org.bukkit.entity.Player
@@ -17,6 +18,7 @@ class CommandItem2 : JavaPlugin(), Listener {
 
         const val PERM_USE = "commanditem.use"
 
+        @JvmField
         var isStrict = false
 
         @JvmField
@@ -28,8 +30,9 @@ class CommandItem2 : JavaPlugin(), Listener {
 
         @JvmStatic
         fun namespacedKey(fullName: String): NamespacedKey {
-            val list = fullName.split(":")
+            val list = fullName.split(":").map { it.lowercase() }
             if (list.size == 1) return NamespacedKey.minecraft(list[0])
+//            getServer().sendMessage(mm.deserialize("nsk: ${list[0]}:${list[1]}"))
             return NamespacedKey(list[0], list[1])
         }
 
@@ -47,7 +50,6 @@ class CommandItem2 : JavaPlugin(), Listener {
 
     override fun onEnable() {
         // Initialize components
-        PDCUtils.initialize(this)
         itemManager = ItemManager(this)
         itemListener = ItemListener(this)
 

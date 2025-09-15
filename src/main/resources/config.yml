@@ -22,8 +22,8 @@ items:
       FIRE_ASPECT: 2
       SHARPNESS: 7
     commands:
-      - "effect give <player> fire_resistance 30 0 true"
-      - "msg <player> <gold>The blade protects you from fire!"
+      - "effect give %player_name% fire_resistance 30 0 true"
+      - "msg %player_name% <gold>The blade protects you from fire!"
     permission-required: true
     cooldown: 60 # in seconds
     consume: false
@@ -33,10 +33,9 @@ items:
     lore:
       - "<gray>Right-click to warp to spawn!"
       - ""
-      - "<italic><yellow>A one-time use item.</yellow></italic>"
     enchantments: {} # No enchants
     commands:
-      - "spawn <player>"
+      - "spawn %player_name%"
     permission-required: false
     cooldown: 300 # 5 minutes
     consume: true
@@ -48,8 +47,8 @@ items:
     enchantments:
       CHANNELING: 1
     commands:
-      - "execute at <player> run summon lightning_bolt ^ ^ ^5" # Summons lightning 5 blocks in front
-      - "playsound minecraft:entity.lightning_bolt.thunder master <player>"
+      - "execute at %player_name% as %player_name% run summon lightning_bolt ^ ^ ^5" # Summons lightning 5 blocks in front
+      - "playsound minecraft:entity.lightning_bolt.thunder master %player_name%"
     permission-required: true
     cooldown: 15
     consume: false
