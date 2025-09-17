@@ -61,6 +61,7 @@
 
 The configuration is split into two main parts: the strict mode setting and the items list.
 
+```
 \# Strict mode:  
 \# true: When a player uses an item, its properties (commands, cooldown, etc.)  
 \#       are ALWAYS read from this file based on its internal ID.  
@@ -95,6 +96,7 @@ items:
     \# If true, one item is removed on use.  
     consume: false  
   \# ... add more items here
+```
 
 ### **Commands & Permissions**
 
@@ -177,6 +179,7 @@ If you want to compile the plugin yourself, follow these steps:
 
 配置文件主要分为两部分：strict 模式设置和 items 物品列表。
 
+```
 \# 严格模式 (strict mode):  
 \# true: 当玩家使用物品时，其属性（指令、冷却等）总是根据其ID从本文件中读取。  
 \#       这能确保全服的物品行为一致。  
@@ -210,6 +213,7 @@ items:
     \# 若为 true，每次使用会消耗一个物品。  
     consume: false  
   \# ... 在这里添加更多物品
+```
 
 ### **指令 & 权限**
 
