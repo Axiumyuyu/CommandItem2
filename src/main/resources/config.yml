@@ -8,37 +8,46 @@
 #        item's own data (PDC). If a property is missing, it falls back
 #        to this configuration file. This allows for "legacy" or uniquely
 #        modified items to exist.
+#
+# Note: If specific config for an item no longer exists, it will fall back to false
 strict: false
 
 # List of all special items. The key (e.g., 'fire_sword') is the unique ID for the item.
+
 items:
   fire_sword:
-    material: "NETHERITE_SWORD"
+    material: "NETHERITE_SWORD"     # https://jd.papermc.io/paper/1.21.1/org/bukkit/Material.html
+    # Use MiniMessage(See https://webui.advntr.dev/) for formatting the name and lore.
     name: "<gradient:#ff8c00:#ff0000>Infernal Blade</gradient>"
     lore:
       - "<gray>A sword forged in dragon's breath."
       - "<dark_red>Use to gain fire resistance."
     enchantments:
+      # NameSpace:EnchantmentName: Level
+      # It supports all vanilla enchantments, also supports enchantments from datapacks or other plugins, in theory.
+      # Defaults to "minecraft:" when no namespace is specified.
       FIRE_ASPECT: 2
       SHARPNESS: 7
+    # Use Any Placeholders here.
     commands:
       - "effect give %player_name% fire_resistance 30 0 true"
       - "msg %player_name% <gold>The blade protects you from fire!"
     permission-required: true
     cooldown: 60 # in seconds
     consume: false
+
   teleport_pearl:
     material: "ENDER_PEARL"
     name: "<light_purple>Warp Pearl</light_purple>"
     lore:
       - "<gray>Right-click to warp to spawn!"
-      - ""
     enchantments: {} # No enchants
     commands:
       - "spawn %player_name%"
     permission-required: false
-    cooldown: 300 # 5 minutes
+    cooldown: 300
     consume: true
+
   lightning_staff:
     material: "BLAZE_ROD"
     name: "<aqua>Staff of Storms</aqua>"

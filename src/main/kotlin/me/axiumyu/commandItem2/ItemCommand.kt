@@ -1,7 +1,6 @@
 package me.axiumyu.commandItem2
 
 import me.axiumyu.commandItem2.CommandItem2.Companion.PERM_ADMIN
-import me.axiumyu.commandItem2.CommandItem2.Companion.isStrict
 import me.axiumyu.commandItem2.CommandItem2.Companion.mm
 import me.axiumyu.commandItem2.PDCUtils.addExtraInfo
 import me.axiumyu.commandItem2.PDCUtils.readDataFromItemStack
@@ -12,8 +11,49 @@ import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import org.bukkit.command.TabCompleter
 import org.bukkit.entity.Player
+import org.bukkit.plugin.java.JavaPlugin.getPlugin
 
-class ItemCommand(private val plugin: CommandItem2) : CommandExecutor, TabCompleter {
+object ItemCommand : CommandExecutor, TabCompleter {
+
+    private val prefix = mm.deserialize("<gold>[CommandItem] ")
+
+    override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
+        if (!sender.hasPermission(PERM_ADMIN)) {
+            sender.sendMsg("<red>You don't have permission to use this command.")
+        }
+
+        if (args.isEmpty()) {
+            sendHelp(sender)
+        }
+
+        when (args[0].lowercase()) {
+            "reload" -> handleReload(sender)
+            "get" -> handleGet(sender, args)
+            else -> sendHelp(sender)
+        }
+        return true
+    }
+
+    override fun onTabComplete(
+        sender: CommandSender,
+        command: Command,
+        label: String,
+        args: Array<out String>
+    ): List<String> {
+        if (!sender.hasPermission(PERM_ADMIN)) return emptyList()
+
+        if (args.size == 1) {
+            return listOf("reload", "get").filter { it.startsWith(args[0], true) }
+        }
+
+        if (args.size == 2 && args[0].equals("get", true)) {
+
+            return ItemManager.getAllItemIds().filter { it.startsWith(args[1], true) }
+        }
+
+        return emptyList()
+    }
+
     private fun Audience.sendMsg(msg: String, hasPrefix: Boolean = true) {
         if (hasPrefix) {
             this.sendMessage(prefix.append { mm.deserialize(msg) })
@@ -30,30 +70,9 @@ class ItemCommand(private val plugin: CommandItem2) : CommandExecutor, TabComple
         }
     }
 
-    private val prefix = mm.deserialize("<gold>[CommandItem] ")
-
-    override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
-        if (!sender.hasPermission(PERM_ADMIN)) {
-            sender.sendMsg("<red>You don't have permission to use this command.")
-            return true
-        }
-
-        if (args.isEmpty()) {
-            sendHelp(sender)
-            return true
-        }
-
-        when (args[0].lowercase()) {
-            "reload" -> handleReload(sender)
-            "get" -> handleGet(sender, args)
-            else -> sendHelp(sender)
-        }
-        return true
-    }
-
     private fun handleReload(sender: CommandSender) {
-        plugin.reload()
-        sender.sendMsg("<green>Plugin reloaded successfully.")
+        getPlugin(CommandItem2::class.java).reload()
+        sender.sendMsg("<green>Configuration reloaded.")
     }
 
     private fun handleGet(sender: CommandSender, args: Array<out String>) {
@@ -67,10 +86,10 @@ class ItemCommand(private val plugin: CommandItem2) : CommandExecutor, TabComple
             return
         }
 
-        val itemId = args[1]
+        val itemId = args[1] ?: ""
         val amount = args.getOrNull(2)?.toIntOrNull() ?: 1
 
-        val itemStack = plugin.itemManager.createItemStack(itemId, amount)
+        val itemStack = ItemManager.createItemStack(itemId, amount)
         if (itemStack == null) {
             sender.sendMsg("<red>Item with ID '$itemId' not found.")
             return
@@ -91,24 +110,5 @@ class ItemCommand(private val plugin: CommandItem2) : CommandExecutor, TabComple
         sender.sendMsg("<yellow>Available Commands:")
         sender.sendMsg("<aqua> - /ci reload: <gray>Reloads the configuration.")
         sender.sendMessage("<aqua> - /ci get <id> [amount]: <gray>Gives you a special item.")
-    }
-
-    override fun onTabComplete(
-        sender: CommandSender,
-        command: Command,
-        label: String,
-        args: Array<out String>
-    ): List<String> {
-        if (!sender.hasPermission(PERM_ADMIN)) return emptyList()
-
-        if (args.size == 1) {
-            return listOf("reload", "get").filter { it.startsWith(args[0], true) }
-        }
-
-        if (args.size == 2 && args[0].equals("get", true)) {
-            return plugin.itemManager.getAllItemIds().filter { it.startsWith(args[1], true) }
-        }
-
-        return emptyList()
     }
 }

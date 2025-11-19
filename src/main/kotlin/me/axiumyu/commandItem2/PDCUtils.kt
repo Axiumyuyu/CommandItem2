@@ -43,10 +43,11 @@ object PDCUtils {
             pdc.set(KEY_CONSUME, BOOLEAN, data.consume)
 
             // Also apply visual properties
-            it.customName(data.name)
+            it.itemName(data.name)
+            it.displayName(data.name)
             it.lore(data.lore)
             // Clear existing enchants before adding new ones
-            it.enchants.keys.forEach { en -> it.removeEnchant(en) }
+            it.removeEnchantments()
             data.enchantments.forEach { (enchant, level) -> it.addEnchant(enchant, level, true) }
         }
     }

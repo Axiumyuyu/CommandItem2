@@ -4,7 +4,7 @@ import me.clip.placeholderapi.expansion.PlaceholderExpansion
 import org.bukkit.OfflinePlayer
 import java.util.concurrent.TimeUnit
 
-class PAPIExpansion(private val plugin: CommandItem2) : PlaceholderExpansion() {
+object PAPIExpansion : PlaceholderExpansion() {
 
     override fun getIdentifier(): String = "commanditem"
     override fun getAuthor(): String = "Axiumyu"
@@ -22,15 +22,15 @@ class PAPIExpansion(private val plugin: CommandItem2) : PlaceholderExpansion() {
 
         return when (type.lowercase()) {
             "cooldown" -> {
-                val remainingMillis = plugin.itemListener.getRemainingCooldown(player.uniqueId, itemId)
+                val remainingMillis = ItemListener.getRemainingCooldown(player.uniqueId, itemId)
                 if (remainingMillis <= 0) "Ready" else formatDuration(remainingMillis)
             }
             "cooldown_s" -> {
-                val remainingMillis = plugin.itemListener.getRemainingCooldown(player.uniqueId, itemId)
+                val remainingMillis = ItemListener.getRemainingCooldown(player.uniqueId, itemId)
                 if (remainingMillis <= 0) "0" else (remainingMillis / 1000).toString()
             }
             "name" -> {
-                plugin.itemManager.getItemData(itemId)?.name?.let {
+                ItemManager.getItemData(itemId)?.name?.let {
                     // PlaceholderAPI often works best with legacy strings
                     net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacySection().serialize(it)
                 } ?: "Unknown Item"

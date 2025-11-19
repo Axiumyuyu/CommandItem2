@@ -4,7 +4,6 @@ import io.papermc.paper.registry.RegistryAccess.registryAccess
 import io.papermc.paper.registry.RegistryKey
 import me.clip.placeholderapi.PlaceholderAPI
 import net.kyori.adventure.text.minimessage.MiniMessage
-import org.bukkit.Bukkit.getServer
 import org.bukkit.Keyed
 import org.bukkit.NamespacedKey
 import org.bukkit.entity.Player
@@ -32,7 +31,6 @@ class CommandItem2 : JavaPlugin(), Listener {
         fun namespacedKey(fullName: String): NamespacedKey {
             val list = fullName.split(":").map { it.lowercase() }
             if (list.size == 1) return NamespacedKey.minecraft(list[0])
-//            getServer().sendMessage(mm.deserialize("nsk: ${list[0]}:${list[1]}"))
             return NamespacedKey(list[0], list[1])
         }
 
@@ -42,32 +40,23 @@ class CommandItem2 : JavaPlugin(), Listener {
         }
     }
 
-
-    lateinit var itemManager: ItemManager
-        private set
-    lateinit var itemListener: ItemListener
-        private set
-
     override fun onEnable() {
-        // Initialize components
-        itemManager = ItemManager(this)
-        itemListener = ItemListener(this)
+
 
         // Load configuration and register items
         saveDefaultConfig()
-        itemManager.loadItems()
+        ItemManager.loadItems()
 
         // Register command and listener
         getCommand("commanditem")?.let {
-            val commandExecutor = ItemCommand(this)
-            it.setExecutor(commandExecutor)
-            it.tabCompleter = commandExecutor
+            it.setExecutor(ItemCommand)
+            it.tabCompleter = ItemCommand
         }
-        server.pluginManager.registerEvents(itemListener, this)
+        server.pluginManager.registerEvents(ItemListener, this)
 
         // Register PlaceholderAPI expansion
 //        if (server.pluginManager.getPlugin("PlaceholderAPI") != null) {
-            PAPIExpansion(this).register()
+            PAPIExpansion.register()
             logger.info("Successfully registered PlaceholderAPI expansion.")
 //        } else {
 //            logger.warning("PlaceholderAPI not found, placeholders will not work.")
@@ -82,7 +71,7 @@ class CommandItem2 : JavaPlugin(), Listener {
 
     fun reload() {
         reloadConfig()
-        itemManager.loadItems()
+        ItemManager.loadItems()
         logger.info("Configuration and items have been reloaded.")
     }
 }

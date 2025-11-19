@@ -5,6 +5,7 @@ import me.axiumyu.commandItem2.CommandItem2.Companion.PERM_USE
 import me.axiumyu.commandItem2.CommandItem2.Companion.isStrict
 import me.axiumyu.commandItem2.CommandItem2.Companion.mm
 import me.axiumyu.commandItem2.CommandItem2.Companion.setPAPI
+import me.axiumyu.commandItem2.PDCUtils.plugin
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerInteractEvent
@@ -13,7 +14,7 @@ import java.util.concurrent.ConcurrentHashMap
 
 
 
-class ItemListener(private val plugin: CommandItem2) : Listener {
+object ItemListener : Listener {
 
     // <Player UUID, <Item ID, Cooldown End Time (ms)>>
     val cooldowns: ConcurrentHashMap<UUID, ConcurrentHashMap<String, Long>> = ConcurrentHashMap()
@@ -73,10 +74,10 @@ class ItemListener(private val plugin: CommandItem2) : Listener {
     private fun getEffectiveData(pdcData: ItemData): ItemData? {
         return if (isStrict) {
             // Strict mode: Always use data from config
-            plugin.itemManager.getItemData(pdcData.id)
+            ItemManager.getItemData(pdcData.id)
         } else {
             // Non-strict mode: Use PDC data, fallback to config
-            val configData = plugin.itemManager.getItemData(pdcData.id)
+            val configData = ItemManager.getItemData(pdcData.id)
             configData?.let {
                 // This is a simple fallback. A more complex merge could be implemented here
                 // if you wanted to mix-and-match properties. For now, we trust the PDC

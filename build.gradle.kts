@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "me.axiumyu.commanditem2"
-version = "1.0.0"
+version = "1.0.3"
 
 repositories {
     mavenLocal()
@@ -21,8 +21,8 @@ repositories {
 }
 
 dependencies {
-    implementation("org.purpurmc.purpur:purpur-api:1.21.6-R0.1-SNAPSHOT")
-    implementation("io.papermc.paper:paper-api:1.21.6-R0.1-SNAPSHOT")
+    implementation("org.purpurmc.purpur:purpur-api:1.21.3-R0.1-SNAPSHOT")
+    implementation("io.papermc.paper:paper-api:1.21.3-R0.1-SNAPSHOT")
     implementation("me.clip:placeholderapi:2.11.6")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 }
