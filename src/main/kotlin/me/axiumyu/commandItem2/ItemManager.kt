@@ -1,21 +1,22 @@
 package me.axiumyu.commandItem2
 
 import io.papermc.paper.registry.RegistryKey.ENCHANTMENT
+import me.axiumyu.commandItem2.CommandItem2.Companion.PERM_USE
 import me.axiumyu.commandItem2.CommandItem2.Companion.getRegistry
 import me.axiumyu.commandItem2.CommandItem2.Companion.isStrict
 import me.axiumyu.commandItem2.CommandItem2.Companion.mm
 import me.axiumyu.commandItem2.CommandItem2.Companion.namespacedKey
+import me.axiumyu.commandItem2.PDCUtils.plugin
 import org.bukkit.Material
 import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.inventory.ItemStack
 import org.bukkit.permissions.Permission
-import org.bukkit.plugin.java.JavaPlugin.getPlugin
 
 object ItemManager {
 
     private val specialItems = mutableMapOf<String, ItemData>()
-    val plugin = getPlugin(CommandItem2::class.java)
+
     fun loadItems() {
 
         specialItems.clear()
@@ -68,7 +69,7 @@ object ItemManager {
 
     private fun unregisterUsePermissions() {
         plugin.server.pluginManager.permissions
-            .filter { it.name.startsWith("specialitem.use.") }
+            .filter { it.name.startsWith(PERM_USE) }
             .forEach {
                 plugin.server.pluginManager.removePermission(it.name)
                 plugin.logger.info("Unregistered permission: ${it.name}")
@@ -76,9 +77,9 @@ object ItemManager {
     }
 
     private fun registerUsePermission(id: String) {
-        val permName = "specialitem.use.$id"
+        val permName = "$PERM_USE.$id"
         if (plugin.server.pluginManager.getPermission(permName) == null) {
-            val permission = Permission(permName, "Allows usage of the special item '$id'.")
+            val permission = Permission(permName, "Allows usage of the command item '$id'.")
             plugin.server.pluginManager.addPermission(permission)
         }
     }

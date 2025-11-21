@@ -32,6 +32,7 @@ object PDCUtils {
     /**
      * Applies the full set of ItemData to an ItemStack's PersistentDataContainer.
      */
+    @JvmStatic
     fun applyDataToItemStack(itemStack: ItemStack, data: ItemData) {
         itemStack.editMeta {
             itemStack.addUnsafeEnchantments(data.enchantments)
@@ -56,6 +57,7 @@ object PDCUtils {
      * Reads the ItemData from an ItemStack's PersistentDataContainer.
      * Returns null if the item is not a special item (missing ID).
      */
+    @JvmStatic
     fun readDataFromItemStack(itemStack: ItemStack): ItemData? {
         val meta = itemStack.itemMeta ?: return null
         val pdc = meta.persistentDataContainer
@@ -75,6 +77,7 @@ object PDCUtils {
         )
     }
 
+    @JvmStatic
     fun addExtraInfo(itemStack: ItemStack, data: ItemData) {
         itemStack.editMeta {
             val cd = data.cooldown

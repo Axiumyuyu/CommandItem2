@@ -23,11 +23,10 @@ object ItemListener : Listener {
     fun onPlayerInteract(event: PlayerInteractEvent) {
         if (event.action.isLeftClick) return
 
-        val player = event.player
         val item = event.item ?: return
-        if (!item.hasItemMeta()) return
-
         val pdcData = PDCUtils.readDataFromItemStack(item) ?: return
+
+        val player = event.player
         val itemId = pdcData.id
 
         // Prevent using items by placing them (e.g., spawn eggs)
@@ -48,7 +47,7 @@ object ItemListener : Listener {
         }
 
         // 2. Cooldown Check
-        val remainingCooldown = getRemainingCooldown(player.uniqueId, effectiveData.id)
+        val remainingCooldown = getCooldown(player.uniqueId, effectiveData.id)
         if (remainingCooldown > 0) {
             player.sendActionBar(mm.deserialize("<red>You must wait <yellow>${"%.1f".format(remainingCooldown / 1000.0)}s<red> before using this again.")) // Using ActionBar for less intrusive message
             return
@@ -99,7 +98,7 @@ object ItemListener : Listener {
         cooldowns.computeIfAbsent(uuid) { ConcurrentHashMap() }[itemId] = endTime
     }
 
-    fun getRemainingCooldown(uuid: UUID, itemId: String): Long {
+    fun getCooldown(uuid: UUID, itemId: String): Long {
         val endTime = cooldowns[uuid]?.get(itemId) ?: return 0
         val remaining = endTime - System.currentTimeMillis()
         return if (remaining > 0) remaining else 0

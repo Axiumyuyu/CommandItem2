@@ -41,8 +41,6 @@ class CommandItem2 : JavaPlugin(), Listener {
     }
 
     override fun onEnable() {
-
-
         // Load configuration and register items
         saveDefaultConfig()
         ItemManager.loadItems()

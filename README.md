@@ -1,26 +1,5 @@
 # **CommandItem2 Plugin**
 
-## **Table of Contents**
-
-* [English Version](https://www.google.com/search?q=%23english)  
-  * [Overview](https://www.google.com/search?q=%23overview)  
-  * [Features](https://www.google.com/search?q=%23features)  
-  * [Dependencies](https://www.google.com/search?q=%23dependencies)  
-  * [Installation](https://www.google.com/search?q=%23installation)  
-  * [Configuration (config.yml)](https://www.google.com/search?q=%23configuration-configyml)  
-  * [Commands & Permissions](https://www.google.com/search?q=%23commands--permissions)  
-  * [Placeholders (PlaceholderAPI)](https://www.google.com/search?q=%23placeholders-placeholderapi)  
-  * [Building from Source](https://www.google.com/search?q=%23building-from-source)  
-* [中文版本](https://www.google.com/search?q=%23%E4%B8%AD%E6%96%87%E7%89%88%E6%9C%AC)  
-  * [项目简介](https://www.google.com/search?q=%23%E9%A1%B9%E7%9B%AE%E7%AE%80%E4%BB%8B)  
-  * [功能特色](https://www.google.com/search?q=%23%E5%8A%9F%E8%83%BD%E7%89%B9%E8%89%B2)  
-  * [前置依赖](https://www.google.com/search?q=%23%E5%89%8D%E7%BD%AE%E4%BE%9D%E8%B5%96)  
-  * [安装方法](https://www.google.com/search?q=%23%E5%AE%89%E8%A3%85%E6%96%B9%E6%B3%95)  
-  * [插件配置 (config.yml)](https://www.google.com/search?q=%23%E6%8F%92%E4%BB%B6%E9%85%8D%E7%BD%AE-configyml)  
-  * [指令 & 权限](https://www.google.com/search?q=%23%E6%8C%87%E4%BB%A4--%E6%9D%83%E9%99%90)  
-  * [变量 (PlaceholderAPI)](https://www.google.com/search?q=%23%E5%8F%98%E9%87%8F-placeholderapi)  
-  * [从源码编译](https://www.google.com/search?q=%23%E4%BB%8E%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91)
-
 ## **English**
 
 *I am not a native English Speaker, sorry for possible mistakes, please refer to Chinese version using translator or check source code.*
@@ -63,11 +42,11 @@ Strict mode can be used for compatibility with older versions or special items m
 
 ### **Commands & Permissions**
 
-| Command | Description | Permission |
-| :---- | :---- | :---- |
-| /ci reload | Reloads the plugin's configuration. | commanditem.admin |
+| Command                   | Description                                | Permission        |
+|:--------------------------|:-------------------------------------------|:------------------|
+| /ci reload                | Reloads the plugin's configuration.        | commanditem.admin |
 | /ci get \<id\> \[amount\] | Gives the player a specified special item. | commanditem.admin |
-| /ci | Shows the help message. | commanditem.admin |
+| /ci                       | Shows the help message.                    | commanditem.admin |
 
 **Player Permissions:**
 
@@ -78,11 +57,11 @@ Strict mode can be used for compatibility with older versions or special items m
 
 Use these placeholders in any other plugin that supports PlaceholderAPI.
 
-| Placeholder | Description | Example Output |
-| :---- | :---- | :---- |
-| %commanditem\_cooldown\_\<item\_id\>% | Shows the formatted remaining cooldown for an item. | 1m 15s / Ready |
-| %commanditem\_cooldown\_s\_\<item\_id\>% | Shows the remaining cooldown in seconds. | 75 / 0 |
-| %commanditem\_name\_\<item\_id\>% | Shows the MiniMessage-formatted name of the item. | Infernal Blade |
+| Placeholder                              | Description                                         | Example Output |
+|:-----------------------------------------|:----------------------------------------------------|:---------------|
+| %commanditem\_cooldown\_\<item\_id\>%    | Shows the formatted remaining cooldown for an item. | 1m 15s / Ready |
+| %commanditem\_cooldown\_s\_\<item\_id\>% | Shows the remaining cooldown in seconds.            | 75 / 0         |
+| %commanditem\_name\_\<item\_id\>%        | Shows the MiniMessage-formatted name of the item.   | Infernal Blade |
 
 ### **Building from Source**
 
@@ -169,17 +148,15 @@ strict 模式可以用于兼容旧版本或者由管理修改过的特殊物品�
 
 1. **克隆仓库:**  
 2. ```
-    git clone \<repository\_url\>  
+    git clone <repository_url>  
     cd CommandItem2
    ```
-   
-
-2. **确保你已安装 JDK 17 或更高版本。**  
-3. **使用 Gradle 构建 JAR 文件:**  
+3. **确保你已安装 JDK 17 或更高版本。**  
+4. **使用 Gradle 构建 JAR 文件:**  
    * Windows 系统:  
      `gradlew build`
 
    * Linux/macOS 系统:  
      `./gradlew build`
 
-4. 编译好的 JAR 文件将会位于 build/libs/ 目录下。
+5. 编译好的 JAR 文件将会位于 build/libs/ 目录下。

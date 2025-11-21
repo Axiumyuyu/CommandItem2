@@ -22,11 +22,11 @@ object PAPIExpansion : PlaceholderExpansion() {
 
         return when (type.lowercase()) {
             "cooldown" -> {
-                val remainingMillis = ItemListener.getRemainingCooldown(player.uniqueId, itemId)
+                val remainingMillis = ItemListener.getCooldown(player.uniqueId, itemId)
                 if (remainingMillis <= 0) "Ready" else formatDuration(remainingMillis)
             }
             "cooldown_s" -> {
-                val remainingMillis = ItemListener.getRemainingCooldown(player.uniqueId, itemId)
+                val remainingMillis = ItemListener.getCooldown(player.uniqueId, itemId)
                 if (remainingMillis <= 0) "0" else (remainingMillis / 1000).toString()
             }
             "name" -> {
