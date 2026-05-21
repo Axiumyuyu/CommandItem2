@@ -1,15 +1,15 @@
 name: CommandItem2
-version: 1.0
+version: 2.0.0
 main: me.axiumyu.commandItem2.CommandItem2
 api-version: '1.21'
 author: Axiumyu
 depend: [PlaceholderAPI]
 libraries:
-  - 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.2.0'
+  - 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.3.21'
 commands:
   commanditem:
     description: Main command for the SpecialItem plugin.
-    aliases: [ci, citem]
+    aliases: [citem, ci]
     permission: commanditem.admin
 permissions:
   commanditem.admin:

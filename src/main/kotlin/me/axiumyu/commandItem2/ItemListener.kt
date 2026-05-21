@@ -4,14 +4,14 @@ package me.axiumyu.commandItem2
 import me.axiumyu.commandItem2.CommandItem2.Companion.PERM_USE
 import me.axiumyu.commandItem2.CommandItem2.Companion.isStrict
 import me.axiumyu.commandItem2.CommandItem2.Companion.mm
+import me.axiumyu.commandItem2.CommandItem2.Companion.plugin
 import me.axiumyu.commandItem2.CommandItem2.Companion.setPAPI
-import me.axiumyu.commandItem2.PDCUtils.plugin
+import org.bukkit.Bukkit.getServer
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerInteractEvent
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
-
 
 
 object ItemListener : Listener {
@@ -29,10 +29,7 @@ object ItemListener : Listener {
         val player = event.player
         val itemId = pdcData.id
 
-        // Prevent using items by placing them (e.g., spawn eggs)
-//        if (event.action == Action.RIGHT_CLICK_BLOCK && event.clickedBlock?.type?.isInteractable == false) {
         event.isCancelled = true
-//        }
 
         val effectiveData = getEffectiveData(pdcData)
         if (effectiveData == null) {
@@ -56,7 +53,12 @@ object ItemListener : Listener {
         // 3. Execute Commands
         effectiveData.commands.forEach {
             val parsedCmd = setPAPI(player, it)
-            plugin.server.dispatchCommand(plugin.server.consoleSender, parsedCmd)
+            val executor = if (parsedCmd.startsWith("player:")) {
+                player
+            } else {
+                getServer().consoleSender
+            }
+            plugin.server.dispatchCommand(executor, parsedCmd)
         }
 
         // 4. Set Cooldown

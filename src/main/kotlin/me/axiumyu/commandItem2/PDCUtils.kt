@@ -1,44 +1,46 @@
 package me.axiumyu.commandItem2
 
+import io.papermc.paper.datacomponent.DataComponentTypes
+import io.papermc.paper.datacomponent.item.Consumable
+import io.papermc.paper.datacomponent.item.UseCooldown
+import io.papermc.paper.datacomponent.item.consumable.ItemUseAnimation
+import jdk.jfr.DataAmount
 import me.axiumyu.commandItem2.CommandItem2.Companion.mm
+import me.axiumyu.commandItem2.CommandItem2.Companion.plugin
 import net.kyori.adventure.text.Component
+import org.bukkit.Bukkit.getServer
 import org.bukkit.NamespacedKey
 import org.bukkit.inventory.ItemStack
+import org.bukkit.persistence.PersistentDataType
 import org.bukkit.persistence.PersistentDataType.*
 import org.bukkit.plugin.java.JavaPlugin
 import org.bukkit.plugin.java.JavaPlugin.getPlugin
 
 object PDCUtils {
 
-    @JvmField
-    val plugin: JavaPlugin = getPlugin(CommandItem2::class.java)
+
+    const val PDC_NAMESPACE = "ci"
 
     // Keys for storing data in PersistentDataContainer
-    @JvmField
-    val KEY_ID: NamespacedKey = NamespacedKey(plugin, "item_id")
+    val KEY_ID: NamespacedKey = NamespacedKey(PDC_NAMESPACE, "item_id")
 
-    @JvmField
-    val KEY_COMMANDS: NamespacedKey = NamespacedKey(plugin, "item_commands")
+    val KEY_COMMANDS: NamespacedKey = NamespacedKey(PDC_NAMESPACE, "item_commands")
 
-    @JvmField
-    val KEY_PERM_REQ: NamespacedKey = NamespacedKey(plugin, "item_perm_req")
+    val KEY_PERM_REQ: NamespacedKey = NamespacedKey(PDC_NAMESPACE, "item_perm_req")
 
-    @JvmField
-    val KEY_COOLDOWN: NamespacedKey = NamespacedKey(plugin, "item_cooldown")
+    val KEY_COOLDOWN: NamespacedKey = NamespacedKey(PDC_NAMESPACE, "item_cooldown")
 
-    @JvmField
-    val KEY_CONSUME: NamespacedKey = NamespacedKey(plugin, "item_consume")
+    val KEY_CONSUME: NamespacedKey = NamespacedKey(PDC_NAMESPACE, "item_consume")
 
     /**
      * Applies the full set of ItemData to an ItemStack's PersistentDataContainer.
      */
-    @JvmStatic
     fun applyDataToItemStack(itemStack: ItemStack, data: ItemData) {
+
         itemStack.editMeta {
-            itemStack.addUnsafeEnchantments(data.enchantments)
             val pdc = it.persistentDataContainer
             pdc.set(KEY_ID, STRING, data.id)
-            pdc.set(KEY_COMMANDS, STRING, data.commands.joinToString("\n"))
+            pdc.set(KEY_COMMANDS, LIST.strings(), data.commands)
             pdc.set(KEY_PERM_REQ, BOOLEAN, data.permissionRequired)
             pdc.set(KEY_COOLDOWN, LONG, data.cooldown)
             pdc.set(KEY_CONSUME, BOOLEAN, data.consume)
@@ -49,15 +51,14 @@ object PDCUtils {
             it.lore(data.lore)
             // Clear existing enchants before adding new ones
             it.removeEnchantments()
-            data.enchantments.forEach { (enchant, level) -> it.addEnchant(enchant, level, true) }
         }
+        itemStack.addUnsafeEnchantments(data.enchantments)
     }
 
     /**
      * Reads the ItemData from an ItemStack's PersistentDataContainer.
      * Returns null if the item is not a special item (missing ID).
      */
-    @JvmStatic
     fun readDataFromItemStack(itemStack: ItemStack): ItemData? {
         val meta = itemStack.itemMeta ?: return null
         val pdc = meta.persistentDataContainer
@@ -69,23 +70,16 @@ object PDCUtils {
             material = itemStack.type,
             name = Component.text(itemStack.type.name),
             lore = itemStack.lore() ?: listOf(),
-            enchantments = itemStack.enchants,
-            commands = pdc.get(KEY_COMMANDS, STRING)?.split("\n") ?: emptyList(),
+            enchantments = itemStack.enchantments,
+            commands = pdc.get(KEY_COMMANDS, LIST.strings()) ?: emptyList(),
             permissionRequired = pdc.get(KEY_PERM_REQ, BOOLEAN) == true,
             cooldown = pdc.get(KEY_COOLDOWN, LONG) ?: 0L,
             consume = pdc.get(KEY_CONSUME, BOOLEAN) == true
         )
     }
 
-    @JvmStatic
     fun addExtraInfo(itemStack: ItemStack, data: ItemData) {
         itemStack.editMeta {
-            val cd = data.cooldown
-            if (cd != 0L) {
-                val cdComponent = it.useCooldown
-                cdComponent.cooldownSeconds = cd.toFloat()
-                it.setUseCooldown(cdComponent)
-            }
             val lore = it.lore() ?: mutableListOf()
             lore.add(mm.deserialize("<gray> --------</gray>"))
             lore.add(mm.deserialize("<gray>冷却时间:${data.cooldown}s</gray>"))

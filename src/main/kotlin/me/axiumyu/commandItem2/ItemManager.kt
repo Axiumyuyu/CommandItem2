@@ -6,7 +6,7 @@ import me.axiumyu.commandItem2.CommandItem2.Companion.getRegistry
 import me.axiumyu.commandItem2.CommandItem2.Companion.isStrict
 import me.axiumyu.commandItem2.CommandItem2.Companion.mm
 import me.axiumyu.commandItem2.CommandItem2.Companion.namespacedKey
-import me.axiumyu.commandItem2.PDCUtils.plugin
+import me.axiumyu.commandItem2.CommandItem2.Companion.plugin
 import org.bukkit.Material
 import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.enchantments.Enchantment
